@@ -1,0 +1,16 @@
+{
+  "name": "livio-api",
+  "version": "1.0.0",
+  "description": "Livio REST API.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js"
+  },
+  "author": "Leonel Donati.",
+  "license": "ISC",
+  "dependencies": {
+    "express": "4.21.2"
+  }
+}

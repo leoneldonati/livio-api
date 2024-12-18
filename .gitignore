@@ -1,0 +1,6 @@
+# node_modules
+node_modules
+# ENVIROMEMT
+.env
+# packages
+package-lock.json
