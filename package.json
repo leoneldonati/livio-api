@@ -11,8 +11,12 @@
   "author": "Leonel Donati.",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "5.1.1",
     "express": "4.21.2",
     "mongodb": "6.12.0",
     "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "morgan": "1.10.0"
   }
 }
