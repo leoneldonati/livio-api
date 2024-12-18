@@ -13,6 +13,7 @@ async function startDb() {
 
     const db = connection.db(DB_NAME);
 
+    console.log(`Connected on ${DB_NAME}`);
     return db;
   } catch (error) {
     console.error(error);
