@@ -5,7 +5,7 @@ import { encryptString } from "../libs/bcrypt.js";
 
 export const __users = Router();
 
-__users.post("/users/create", async (req, res) => {
+__users.post("/users", async (req, res) => {
   try {
     const payload = req.body;
 
@@ -63,4 +63,11 @@ __users.post("/users/create", async (req, res) => {
       })
       .status(500);
   }
+});
+
+__users.patch("/users/:id", async (req, res) => {
+  const id = req.params;
+  try {
+  } catch (error) {}
+  return res.json(id);
 });
