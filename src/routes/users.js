@@ -3,10 +3,7 @@ import { usersCollection } from "../db/index.js";
 import { parseUserSchema } from "../libs/zod.js";
 import { encryptString } from "../libs/bcrypt.js";
 import { runWorker } from "../utils/workers.js";
-import { fileURLToPath } from "node:url";
-import { optimize } from "../libs/sharp.js";
-import { upload } from "../libs/cld.js";
-import path from "node:path";
+import { ObjectId } from "mongodb";
 
 export const __users = Router();
 
@@ -72,6 +69,9 @@ __users.post("/users", async (req, res) => {
 __users.patch("/users/:id", async (req, res) => {
   const id = req.params?.id;
   const files = req.files;
+  const payload = req.body;
+
+  // USER INFO
 
   // AVATAR Y HEADER PHOTO
   let assets = null;
@@ -85,8 +85,8 @@ __users.patch("/users/:id", async (req, res) => {
         : [null, files["header-photo"]];
   }
 
-  let uploaded = null;
   try {
+    let uploaded = null;
     if (assets) {
       // RUN OPTIMIZATION AND UPLOAD OUT OF PRINCIPAL THREAD
       const result = await runWorker(
@@ -99,7 +99,31 @@ __users.patch("/users/:id", async (req, res) => {
 
       uploaded = result;
     }
-    return res.json({ id, assets });
+
+    const updatedUser = await usersCollection.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          headerPhoto:
+            uploaded && uploaded[1] ? uploaded[1] : this?.headerPhoto,
+          avatar: uploaded && uploaded[0] ? uploaded[0] : this?.avatar,
+          bio: payload?.bio != "" ? payload.bio : this?.bio,
+          name: payload?.name != "" ? payload.name : this?.name,
+          username: payload?.username != "" ? payload.username : this?.username,
+        },
+      },
+      { returnDocument: "after" }
+    );
+
+    if (!updatedUser)
+      return res
+        .json({
+          message: "",
+          status: 409,
+          otherIssues: null,
+        })
+        .status(409);
+    return res.json({ updatedUser });
   } catch (error) {
     console.log(error);
     return res

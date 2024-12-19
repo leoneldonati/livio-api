@@ -6,7 +6,7 @@ const { optimizedAssets } = await optimize(JSON.parse(workerData.assets), {
   format: "avif",
 });
 const { uploaded } = await upload(optimizedAssets, {
-  folder: `livio-web/user-${workerData.id}/`,
+  folder: `livio-web/users/${workerData.id}`,
 });
 
 parentPort.postMessage(uploaded);
