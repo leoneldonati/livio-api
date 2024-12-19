@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // FILES
-app.use(fileUpload({ useTempFiles: true, tempFileDir: "./tmp", debug: true }));
+app.use(fileUpload({ useTempFiles: true, tempFileDir: "./tmp" }));
 
 // JUST USE IN DEVELOPMENT
 app.use(morgan("dev"));
